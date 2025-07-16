@@ -1,5 +1,5 @@
 import { io } from 'socket.io-client';
 
-const socket = io('http://localhost:5000'); // backend server
+const socket = io('https://hubx-3imk.onrender.com'); // backend server
 
 export default socket;
