@@ -6,6 +6,7 @@ import socket from '../socket';
 import axios from '../axios';
 import styles from './Chat.module.css';
 import EditProfileModal from './EditProfileModal.jsx'; // adjust path if needed
+import { getFileUrl } from '../utils/fileUrl.js';
 
 function Chat() {
   const [message, setMessage] = useState('');
@@ -20,6 +21,7 @@ function Chat() {
   const [showProfileModal, setShowProfileModal] = useState(false);
 
   const navigate = useNavigate();
+  // app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
   useEffect(() => {
     const storedId = localStorage.getItem('userId');
@@ -120,7 +122,9 @@ function Chat() {
 
   const renderFilePreview = (file) => {
     if (!file) return null;
-    const url = `http://localhost:5000${file.url}`;
+    // const url = `http://localhost:5000${file.url}`;
+    const url = getFileUrl(file.url);
+    console.log("🔗 Rendering file from:", url);
     if (file.type.startsWith('image/')) {
       return <img src={url} alt="img" className={styles.chatImage} />;
     }

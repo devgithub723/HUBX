@@ -48,7 +48,14 @@ app.use(express.json());
 app.use('/api/auth', authRoutes);
 app.use('/api/messages', messageRoutes);
 app.use('/api/upload', uploadRoute);
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
+// ✅ Serve uploads with proper CORS and resource policy headers
+app.use('/uploads', (req, res, next) => {
+    console.log(`[UPLOAD REQUEST]: ${req.method} ${req.url}`);
+  res.setHeader('Access-Control-Allow-Origin', '*'); // Allow all or specific frontend origin
+  res.setHeader('Cross-Origin-Resource-Policy', 'cross-origin'); // Crucial for videos/PDFs
+  next();
+}, express.static(path.join(__dirname, 'uploads')));
 
 // ✅ MongoDB connect
 mongoose.connect(process.env.MONGO_URI)
