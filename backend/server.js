@@ -17,13 +17,26 @@ dotenv.config();
 
 const app = express();
 const server = http.createServer(app);
-const io = socketIO(server, {
-  cors: {
-    origin: ['http://localhost:5173', 'https://hubx-5.onrender.com'],
-    methods: ['GET', 'POST'],
-    credentials: true
-  }
-});
+// const io = socketIO(server, {
+//   cors: {
+//     origin: ['http://localhost:5173', 'https://hubx-5.onrender.com'],
+//     methods: ['GET', 'POST'],
+//     credentials: true
+//   }
+// });
+const allowedOrigins = ['http://localhost:5173', 'https://hubx-5.onrender.com'];
+
+app.use(cors({
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true,
+}));
+
 
 
 // Middleware
